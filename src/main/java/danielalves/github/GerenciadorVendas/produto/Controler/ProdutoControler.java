@@ -61,11 +61,13 @@ public class ProdutoControler {
 
         return service.buscarProduto(uuid).map(produto -> {
 
-            produto.setNome(dto.nome());
-            produto.setSku(dto.sku());
-            produto.setDescricao(dto.descricao());
-            produto.setPreco(dto.preco());
-            produto.setQuantidade(dto.quantidade());
+            Produto produtoAuxiliar = mapper.toEntity(dto);
+
+            produto.setNome(produtoAuxiliar.getNome());
+            produto.setSku(produtoAuxiliar.getSku());
+            produto.setDescricao(produtoAuxiliar.getDescricao());
+            produto.setPreco(produtoAuxiliar.getPreco());
+            produto.setQuantidade(produtoAuxiliar.getQuantidade());
 
 
             service.atualizarProduto(produto);
