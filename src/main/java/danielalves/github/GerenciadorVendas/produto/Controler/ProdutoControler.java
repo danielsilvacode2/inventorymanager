@@ -6,12 +6,15 @@ import danielalves.github.GerenciadorVendas.produto.Produto;
 import danielalves.github.GerenciadorVendas.produto.service.ProdutoService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("produto")
@@ -22,6 +25,8 @@ public class ProdutoControler {
     private final ProdutoMapper mapper;
     private final ProdutoService service;
 
+
+    //O POST DA API
 
     @PostMapping
     public ResponseEntity<Object> salvar(@RequestBody @Valid ProdutoDto dto) {
@@ -39,6 +44,7 @@ public class ProdutoControler {
 
     }
 
+    //OS METODOS GET DA API
 
     @GetMapping("/{id}")
     public ResponseEntity<ProdutoDto> buscarProduto(@PathVariable("id") String id) {
@@ -53,7 +59,29 @@ public class ProdutoControler {
 
     }
 
+    @GetMapping
+    public ResponseEntity<List<ProdutoDto>> pesquisarProduto(
+            @RequestParam(value = "nome", required = false)
+            String nome,
+            @RequestParam(value = "sku", required = false)
+            String sku,
+            @RequestParam(value = "descricao", required = false)
+            String descricao,
 
+            @RequestParam(value = "preco", required = false)
+            Double preco
+    ) {
+
+        List<ProdutoDto> produtoDtoList = service.pesquisaProduto(nome, sku, descricao, preco)
+                .stream()
+                .map(produto -> mapper.toDto(produto))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.status(HttpStatus.OK).body(produtoDtoList);
+
+    }
+
+    //OS METODOS DE ATUALIZACAO DA API
     @PutMapping("/{id}")
     public ResponseEntity<Object> atualizarProduto(@PathVariable("id") String id, @RequestBody @Valid ProdutoDto dto) {
 
@@ -77,6 +105,7 @@ public class ProdutoControler {
 
     }
 
+    //OS METODO DE DELETAR DA API
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deletarProduto(@PathVariable("id") String id) {
 

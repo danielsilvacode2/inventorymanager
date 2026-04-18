@@ -1,4 +1,4 @@
-package danielalves.github.GerenciadorVendas.produto.Controler.dto;
+package danielalves.github.GerenciadorVendas.common;
 
 import org.springframework.http.HttpStatus;
 

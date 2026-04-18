@@ -4,10 +4,12 @@ package danielalves.github.GerenciadorVendas.produto.service;
 import danielalves.github.GerenciadorVendas.exceptions.OperacaoNaoPermitidaException;
 import danielalves.github.GerenciadorVendas.produto.Produto;
 import danielalves.github.GerenciadorVendas.produto.ProdutoRepository;
+import danielalves.github.GerenciadorVendas.produto.service.specs.ProdutoSpecs;
 import lombok.AllArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -57,6 +59,31 @@ public class ProdutoService {
         }else {
             throw new OperacaoNaoPermitidaException("esse produto ainda esta em estoque n e possivel deletar ele");
         }
+
+    }
+
+
+    public List<Produto> pesquisaProduto(String nome, String sku, String descricao,Double preco){
+        Specification<Produto> specification = (root, query, cb) ->  cb.conjunction();
+
+        if(nome != null){
+            specification = specification.and(ProdutoSpecs.nomeLike(nome));
+        }
+
+        if(sku != null){
+            specification = specification.and(ProdutoSpecs.skuLike(sku));
+        }
+
+        if(descricao != null){
+            specification = specification.and(ProdutoSpecs.descricaoLike(descricao));
+        }
+
+
+        if(preco != null && preco > 0 ){
+            specification = specification.and(ProdutoSpecs.precoEqual(preco));
+        }
+
+        return repository.findAll(specification);
 
     }
 
