@@ -4,6 +4,7 @@ package danielalves.github.GerenciadorVendas.produto.service;
 import danielalves.github.GerenciadorVendas.exceptions.OperacaoNaoPermitidaException;
 import danielalves.github.GerenciadorVendas.produto.Produto;
 import danielalves.github.GerenciadorVendas.produto.ProdutoRepository;
+import danielalves.github.GerenciadorVendas.produto.service.specs.ProdutoSpecs;
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;

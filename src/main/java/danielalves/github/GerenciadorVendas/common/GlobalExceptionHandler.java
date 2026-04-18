@@ -3,8 +3,6 @@ package danielalves.github.GerenciadorVendas.common;
 
 import danielalves.github.GerenciadorVendas.exceptions.OperacaoNaoPermitidaException;
 import danielalves.github.GerenciadorVendas.exceptions.RegistroDuplicadoException;
-import danielalves.github.GerenciadorVendas.produto.Controler.dto.ErroCampo;
-import danielalves.github.GerenciadorVendas.produto.Controler.dto.ErroResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;

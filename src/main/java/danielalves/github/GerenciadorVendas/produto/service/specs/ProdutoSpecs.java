@@ -1,4 +1,4 @@
-package danielalves.github.GerenciadorVendas.produto.service;
+package danielalves.github.GerenciadorVendas.produto.service.specs;
 
 import danielalves.github.GerenciadorVendas.produto.Produto;
 import org.springframework.data.jpa.domain.Specification;

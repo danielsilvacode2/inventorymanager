@@ -26,6 +26,8 @@ public class ProdutoControler {
     private final ProdutoService service;
 
 
+    //O POST DA API
+
     @PostMapping
     public ResponseEntity<Object> salvar(@RequestBody @Valid ProdutoDto dto) {
 
@@ -42,6 +44,7 @@ public class ProdutoControler {
 
     }
 
+    //OS METODOS GET DA API
 
     @GetMapping("/{id}")
     public ResponseEntity<ProdutoDto> buscarProduto(@PathVariable("id") String id) {
@@ -65,11 +68,11 @@ public class ProdutoControler {
             @RequestParam(value = "descricao", required = false)
             String descricao,
 
-            @RequestParam(value = "preco",required = false)
+            @RequestParam(value = "preco", required = false)
             Double preco
     ) {
 
-        List<ProdutoDto> produtoDtoList = service.pesquisaProduto(nome,sku,descricao,preco)
+        List<ProdutoDto> produtoDtoList = service.pesquisaProduto(nome, sku, descricao, preco)
                 .stream()
                 .map(produto -> mapper.toDto(produto))
                 .collect(Collectors.toList());
@@ -78,7 +81,7 @@ public class ProdutoControler {
 
     }
 
-
+    //OS METODOS DE ATUALIZACAO DA API
     @PutMapping("/{id}")
     public ResponseEntity<Object> atualizarProduto(@PathVariable("id") String id, @RequestBody @Valid ProdutoDto dto) {
 
@@ -102,6 +105,7 @@ public class ProdutoControler {
 
     }
 
+    //OS METODO DE DELETAR DA API
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deletarProduto(@PathVariable("id") String id) {
 
