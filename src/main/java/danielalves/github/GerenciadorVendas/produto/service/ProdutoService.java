@@ -5,9 +5,12 @@ import danielalves.github.GerenciadorVendas.exceptions.OperacaoNaoPermitidaExcep
 import danielalves.github.GerenciadorVendas.produto.Produto;
 import danielalves.github.GerenciadorVendas.produto.ProdutoRepository;
 import lombok.AllArgsConstructor;
+import org.hibernate.dialect.HANADialect;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -57,6 +60,18 @@ public class ProdutoService {
         }else {
             throw new OperacaoNaoPermitidaException("esse produto ainda esta em estoque n e possivel deletar ele");
         }
+
+    }
+
+
+    public List<Produto> pesquisaProduto(String nome){
+        Specification<Produto> specification = (root, query, cb) ->  cb.conjunction();
+
+        if(nome != null){
+            specification = specification.and(ProdutoSpecs.specsNome(nome));
+        }
+
+        return repository.findAll(specification);
 
     }
 
