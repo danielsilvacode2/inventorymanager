@@ -5,10 +5,8 @@ import danielalves.github.GerenciadorVendas.exceptions.OperacaoNaoPermitidaExcep
 import danielalves.github.GerenciadorVendas.produto.Produto;
 import danielalves.github.GerenciadorVendas.produto.ProdutoRepository;
 import lombok.AllArgsConstructor;
-import org.hibernate.dialect.HANADialect;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.List;
 import java.util.Optional;
@@ -64,11 +62,24 @@ public class ProdutoService {
     }
 
 
-    public List<Produto> pesquisaProduto(String nome){
+    public List<Produto> pesquisaProduto(String nome, String sku, String descricao,Double preco){
         Specification<Produto> specification = (root, query, cb) ->  cb.conjunction();
 
         if(nome != null){
-            specification = specification.and(ProdutoSpecs.specsNome(nome));
+            specification = specification.and(ProdutoSpecs.nomeLike(nome));
+        }
+
+        if(sku != null){
+            specification = specification.and(ProdutoSpecs.skuLike(sku));
+        }
+
+        if(descricao != null){
+            specification = specification.and(ProdutoSpecs.descricaoLike(descricao));
+        }
+
+
+        if(preco != null && preco > 0 ){
+            specification = specification.and(ProdutoSpecs.precoEqual(preco));
         }
 
         return repository.findAll(specification);

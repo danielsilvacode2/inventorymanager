@@ -59,9 +59,17 @@ public class ProdutoControler {
     @GetMapping
     public ResponseEntity<List<ProdutoDto>> pesquisarProduto(
             @RequestParam(value = "nome", required = false)
-            String nome) {
+            String nome,
+            @RequestParam(value = "sku", required = false)
+            String sku,
+            @RequestParam(value = "descricao", required = false)
+            String descricao,
 
-        List<ProdutoDto> produtoDtoList = service.pesquisaProduto(nome)
+            @RequestParam(value = "preco",required = false)
+            Double preco
+    ) {
+
+        List<ProdutoDto> produtoDtoList = service.pesquisaProduto(nome,sku,descricao,preco)
                 .stream()
                 .map(produto -> mapper.toDto(produto))
                 .collect(Collectors.toList());
