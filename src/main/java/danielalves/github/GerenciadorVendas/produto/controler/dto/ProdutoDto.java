@@ -1,4 +1,4 @@
-package danielalves.github.GerenciadorVendas.produto.Controler.dto;
+package danielalves.github.GerenciadorVendas.produto.controler.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;

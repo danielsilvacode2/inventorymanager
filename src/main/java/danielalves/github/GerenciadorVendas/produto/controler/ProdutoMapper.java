@@ -1,6 +1,6 @@
-package danielalves.github.GerenciadorVendas.produto.Controler;
+package danielalves.github.GerenciadorVendas.produto.controler;
 
-import danielalves.github.GerenciadorVendas.produto.Controler.dto.ProdutoDto;
+import danielalves.github.GerenciadorVendas.produto.controler.dto.ProdutoDto;
 import danielalves.github.GerenciadorVendas.produto.Produto;
 import org.mapstruct.Mapper;
 
