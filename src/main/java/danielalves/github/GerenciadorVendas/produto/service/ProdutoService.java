@@ -6,6 +6,9 @@ import danielalves.github.GerenciadorVendas.produto.Produto;
 import danielalves.github.GerenciadorVendas.produto.ProdutoRepository;
 import danielalves.github.GerenciadorVendas.produto.service.specs.ProdutoSpecs;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +47,6 @@ public class ProdutoService {
         }
 
 
-
         validation.validar(produto);
         repository.save(produto);
 
@@ -56,34 +58,37 @@ public class ProdutoService {
 
         if (produto.getQuantidade() == 0) {
             repository.delete(produto);
-        }else {
+        } else {
             throw new OperacaoNaoPermitidaException("esse produto ainda esta em estoque n e possivel deletar ele");
         }
 
     }
 
 
-    public List<Produto> pesquisaProduto(String nome, String sku, String descricao,Double preco){
-        Specification<Produto> specification = (root, query, cb) ->  cb.conjunction();
+    public Page<Produto> pesquisaProduto(String nome, String sku, String descricao, Double preco, Integer page, Integer size) {
+        Specification<Produto> specification = (root, query, cb) -> cb.conjunction();
 
-        if(nome != null){
+        if (nome != null) {
             specification = specification.and(ProdutoSpecs.nomeLike(nome));
         }
 
-        if(sku != null){
+        if (sku != null) {
             specification = specification.and(ProdutoSpecs.skuLike(sku));
         }
 
-        if(descricao != null){
+        if (descricao != null) {
             specification = specification.and(ProdutoSpecs.descricaoLike(descricao));
         }
 
 
-        if(preco != null && preco > 0 ){
+        if (preco != null && preco > 0) {
             specification = specification.and(ProdutoSpecs.precoEqual(preco));
         }
 
-        return repository.findAll(specification);
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        return repository.findAll(specification, pageable);
 
     }
 
