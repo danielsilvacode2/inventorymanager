@@ -6,6 +6,7 @@ import danielalves.github.GerenciadorVendas.produto.Produto;
 import danielalves.github.GerenciadorVendas.produto.service.ProdutoService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -60,7 +61,7 @@ public class ProdutoControler {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProdutoDto>> pesquisarProduto(
+    public ResponseEntity<Page<ProdutoDto>> pesquisarProduto(
             @RequestParam(value = "nome", required = false)
             String nome,
             @RequestParam(value = "sku", required = false)
@@ -69,13 +70,17 @@ public class ProdutoControler {
             String descricao,
 
             @RequestParam(value = "preco", required = false)
-            Double preco
+            Double preco,
+
+            @RequestParam(value = "page", defaultValue = "0")
+            Integer page,
+            @RequestParam(value = "size", defaultValue = "5")
+            Integer size
     ) {
 
-        List<ProdutoDto> produtoDtoList = service.pesquisaProduto(nome, sku, descricao, preco)
-                .stream()
-                .map(produto -> mapper.toDto(produto))
-                .collect(Collectors.toList());
+        Page<Produto> produtos = service.pesquisaProduto(nome, sku, descricao, preco, page, size);
+
+        Page<ProdutoDto> produtoDtoList = produtos.map(mapper::toDto);
 
         return ResponseEntity.status(HttpStatus.OK).body(produtoDtoList);
 
